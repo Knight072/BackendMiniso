@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form Example</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<h1>LinearSearch</h1>
+<form>
+    <label for="list">List:</label><br>
+    <input type="text" id="list" name="list"><br><br>
+    <label for="value">Value:</label><br>
+    <input type="text" id="value" name="value"><br><br>
+    <input type="button" value="Submit" onclick="loadGetMsg()">
+</form>
+<div id="getrespmsg"></div>
+
+<script>
+    function loadGetMsg() {
+        // Obtiene los valores de los campos de entrada
+        let list = document.getElementById("list").value;
+        let value = document.getElementById("value").value;
+
+        // Configura y envía la solicitud GET
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            document.getElementById("getrespmsg").innerHTML = this.responseText;
+        }
+        xhttp.open("GET", "/search?list=" + encodeURIComponent(list) + "&value=" + encodeURIComponent(value) + "&searchType=/linearsearch", true);
+        xhttp.send();
+    }
+</script>
+<h1>BinarySearch</h1>
+<form>
+    <label for="list">List:</label><br>
+    <input type="text" id="list1" name="list"><br><br>
+    <label for="value">Value:</label><br>
+    <input type="text" id="value1" name="value"><br><br>
+    <input type="button" value="Submit" onclick="loadGetMsg1()">
+</form>
+<div id="getrespmsg1"></div>
+
+<script>
+    function loadGetMsg1() {
+        // Obtiene los valores de los campos de entrada
+        let list = document.getElementById("list1").value;
+        let value = document.getElementById("value1").value;
+
+        // Configura y envía la solicitud GET
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+            document.getElementById("getrespmsg1").innerHTML = this.responseText;
+        }
+        xhttp.open("GET", "/search?list=" + encodeURIComponent(list) + "&value=" + encodeURIComponent(value) + "&searchType=/binarysearch", true);
+        xhttp.send();
+    }
+</script>
+
+</body>
+</html>
