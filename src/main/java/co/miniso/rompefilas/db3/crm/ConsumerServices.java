@@ -26,11 +26,6 @@ import java.util.*;
 @Component
 public class ConsumerServices {
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(
-            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +  // Parte local
-                    "[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$" // Dominio y TLD
-    );
-
     private final ClientRepository clientRepository;
 
     @Autowired
@@ -168,11 +163,9 @@ public class ConsumerServices {
     }
 
     private boolean emailVerify(String email) {
-        if (email == null || email.length() > 320) { // Limita la longitud máxima del correo
-            return false;
-        }
-        Matcher matcher = EMAIL_PATTERN.matcher(email);
-        return matcher.matches();
+        String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" // Empieza con caracteres válidos para la parte local
+                + "[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$"; // Luego el dominio y su TLD (con mínimo 2 caracteres)
+        return email.matches(regex);
     }
 
     private void emailExistVerify(String email) throws ExistEmailException {
