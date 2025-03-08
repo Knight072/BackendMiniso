@@ -26,13 +26,13 @@ public class ArticleController {
     }
 
     @GetMapping("{itemPosNo}")
-    public ResponseEntity<?> getArticleByItemPosNo(
+    public ResponseEntity<List<Article>> getArticleByItemPosNo(
             @PathVariable("itemPosNo") String itemPosNo,
             @RequestHeader("X-Tienda") String tienda) {
 
         if (!tenantService.getAllTenants().containsKey(tienda)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Error: Tienda no registrada.");
+                    .body(null);
         }
 
         // 🔹 Cambiar la base de datos activa

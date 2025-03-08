@@ -27,7 +27,7 @@ public class ConsultingController {
 	}
 
 	@GetMapping("{numBill}")
-	public ResponseEntity<?> getBillById(@PathVariable("numBill") String numBill, HttpServletRequest request) {
+	public ResponseEntity<List<Object[]>> getBillById(@PathVariable("numBill") String numBill, HttpServletRequest request) {
 		// Obtener las cookies de la petición
 		Cookie[] cookies = request.getCookies();
 
@@ -42,6 +42,6 @@ public class ConsultingController {
 			}
 		}
 		// Si no hay cookie o no es válida, devolver 401 Unauthorized
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Acceso denegado: Sesión expirada o inválida.");
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	}
 }

@@ -63,31 +63,27 @@ public class ConsumerServices {
             os.write(input, 0, input.length);
         }
 
-        try {
-            int responseCode = connection.getResponseCode();
-            // Si el código de respuesta es 200, leer la respuesta
-            if (responseCode == HttpURLConnection.HTTP_OK) {
+        int responseCode = connection.getResponseCode();
+        // Si el código de respuesta es 200, leer la respuesta
+        if (responseCode == HttpURLConnection.HTTP_OK) {
 
-            } else {
-                // Si el código de respuesta es un error (por ejemplo, 500), leer el error
-                try (InputStream is = connection.getErrorStream()) {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                    String response;
-                    List<String> items = new ArrayList<>();
-                    while ((response = br.readLine()) != null) {
-                        // Expresion regular para extraer los valores de CustomerNumber
-                        Pattern pattern = Pattern.compile("<Message>(.*?)</Message>");
-                        Matcher matcher = pattern.matcher(response);
-                        while (matcher.find()) {
-                            items.add(matcher.group(1)); // Obtiene el contenido entre <Message>...</Message>
-                        }
+        } else {
+            // Si el código de respuesta es un error (por ejemplo, 500), leer el error
+            try (InputStream is = connection.getErrorStream()) {
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String response;
+                List<String> items = new ArrayList<>();
+                while ((response = br.readLine()) != null) {
+                    // Expresion regular para extraer los valores de CustomerNumber
+                    Pattern pattern = Pattern.compile("<Message>(.*?)</Message>");
+                    Matcher matcher = pattern.matcher(response);
+                    while (matcher.find()) {
+                        items.add(matcher.group(1)); // Obtiene el contenido entre <Message>...</Message>
                     }
                 }
             }
-            return responseCode;
-        } catch (IOException e) {
-            throw e;
         }
+        return responseCode;
     }
 
     /**
@@ -316,7 +312,6 @@ public class ConsumerServices {
                 + "            <!--Always -1:-->\r\n"
                 + "            <epic:CustomerNumber>" + customerno + "</epic:CustomerNumber>\r\n"
                 + "            <!--Optional:-->\r\n"
-                + "            \r\n"
                 + "         </ns:customerAddresses>\r\n"
                 + "         <ns:customerEmails xmlns:b=\"http://schemas.datacontract.org/2004/07/Epicor.Retail.Crm.CustomerWebService\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n"
                 + "                <!--Optional:-->\r\n"

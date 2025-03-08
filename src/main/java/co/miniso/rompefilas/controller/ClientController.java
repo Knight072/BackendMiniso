@@ -25,7 +25,7 @@ public class ClientController {
     }
 
     @GetMapping("{doc}")
-    public ResponseEntity<?> getClientByDoc(@PathVariable("doc") String doc, HttpServletRequest request) {
+    public ResponseEntity<Client> getClientByDoc(@PathVariable("doc") String doc, HttpServletRequest request) {
         // Obtener cookies de la solicitud
         Cookie[] cookies = request.getCookies();
 
@@ -40,7 +40,7 @@ public class ClientController {
         }
 
         // Si no hay cookie o no es válida, devolver 401 Unauthorized
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Acceso denegado: Sesión expirada o inválida.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @PutMapping("/update")
