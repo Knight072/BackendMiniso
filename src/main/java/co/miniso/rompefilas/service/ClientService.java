@@ -32,7 +32,7 @@ public class ClientService {
     public String updateClient(Client oldClient, Client newClient) {
         int response = 500;
         try {
-            if (!oldClient.getEmail().matches(newClient.getEmail())) {
+            if (!oldClient.getEmail().equals(newClient.getEmail())) {
                 response = consumerServices.updateCustomer(newClient.getIdAptos(), newClient.getName(),
                         newClient.getGender(), newClient.getlastName(), newClient.getEmail(),
                         oldClient.getDocument(), newClient.getTypeId(), "111111101", "Unchanged", "Modified");

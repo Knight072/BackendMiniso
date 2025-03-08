@@ -26,6 +26,11 @@ import java.util.*;
 @Component
 public class ConsumerServices {
 
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(
+            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" +  // Parte local
+                    "[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$" // Dominio y TLD
+    );
+
     private final ClientRepository clientRepository;
 
     @Autowired
@@ -51,17 +56,7 @@ public class ConsumerServices {
         } else {
             throw new BadEmailException(BadEmailException.BAD_EMAIL);
         }
-        URL url = new URL("http://mns-crm/CRMWebService/CrmService.svc/basic");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
-        connection.setRequestProperty("SOAPAction", "http://epicor.com/retail/CRM/7.0.0/ICrmService/Save");
-        connection.setDoOutput(true);
-
-        try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = xmlSaveSoap.getBytes("UTF-8");
-            os.write(input, 0, input.length);
-        }
+        HttpURLConnection connection = getHttpURLConnection(xmlSaveSoap);
 
         int responseCode = connection.getResponseCode();
         // Si el código de respuesta es 200, leer la respuesta
@@ -86,6 +81,21 @@ public class ConsumerServices {
         return responseCode;
     }
 
+    private static HttpURLConnection getHttpURLConnection(String xmlSaveSoap) throws IOException {
+        URL url = new URL("http://mns-crm/CRMWebService/CrmService.svc/basic");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
+        connection.setRequestProperty("SOAPAction", "http://epicor.com/retail/CRM/7.0.0/ICrmService/Save");
+        connection.setDoOutput(true);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = xmlSaveSoap.getBytes("UTF-8");
+            os.write(input, 0, input.length);
+        }
+        return connection;
+    }
+
     /**
      * method that create a customer using a SOAP Service
      *
@@ -101,17 +111,7 @@ public class ConsumerServices {
         } else {
             throw new BadEmailException(BadEmailException.BAD_EMAIL);
         }
-        URL url = new URL("http://mns-crm/CRMWebService/CrmService.svc/basic");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
-        connection.setRequestProperty("SOAPAction", "http://epicor.com/retail/CRM/7.0.0/ICrmService/SaveNewCustomer");
-        connection.setDoOutput(true);
-
-        try (OutputStream os = connection.getOutputStream()) {
-            byte[] input = xmlSoapAdd.getBytes("UTF-8");
-            os.write(input, 0, input.length);
-        }
+        HttpURLConnection connection = getUrlConnection(xmlSoapAdd);
 
         try {
             int responseCode = connection.getResponseCode();
@@ -152,10 +152,27 @@ public class ConsumerServices {
         }
     }
 
+    private static HttpURLConnection getUrlConnection(String xmlSoapAdd) throws IOException {
+        URL url = new URL("http://mns-crm/CRMWebService/CrmService.svc/basic");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
+        connection.setRequestProperty("SOAPAction", "http://epicor.com/retail/CRM/7.0.0/ICrmService/SaveNewCustomer");
+        connection.setDoOutput(true);
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = xmlSoapAdd.getBytes("UTF-8");
+            os.write(input, 0, input.length);
+        }
+        return connection;
+    }
+
     private boolean emailVerify(String email) {
-        String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@" // Empieza con caracteres válidos para la parte local
-                + "[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$"; // Luego el dominio y su TLD (con mínimo 2 caracteres)
-        return email.matches(regex);
+        if (email == null || email.length() > 320) { // Limita la longitud máxima del correo
+            return false;
+        }
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
+        return matcher.matches();
     }
 
     private void emailExistVerify(String email) throws ExistEmailException {
