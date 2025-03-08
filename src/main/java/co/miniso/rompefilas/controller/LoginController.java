@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping
 public class LoginController {
 
-	private LoginService loginService;
-	private SessionRepository sessionRepository;
+	private final LoginService loginService;
+	private final SessionRepository sessionRepository;
 
 	@Autowired
 	public LoginController(LoginService loginService, SessionRepository sessionRepository) {

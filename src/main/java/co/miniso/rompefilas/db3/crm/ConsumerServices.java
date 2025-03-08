@@ -1,4 +1,4 @@
-package co.miniso.rompefilas.db3.CRM;
+package co.miniso.rompefilas.db3.crm;
 
 import java.io.BufferedReader;
 
@@ -10,8 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.*;
 
-import co.miniso.rompefilas.db3.CRM.Exceptions.BadEmailException;
-import co.miniso.rompefilas.db3.CRM.Exceptions.ExistEmailException;
+import co.miniso.rompefilas.db3.crm.Exceptions.BadEmailException;
+import co.miniso.rompefilas.db3.crm.Exceptions.ExistEmailException;
 import co.miniso.rompefilas.db3.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -82,12 +82,10 @@ public class ConsumerServices {
                             items.add(matcher.group(1)); // Obtiene el contenido entre <Message>...</Message>
                         }
                     }
-                    System.out.println(items.get(0));// Imprime el mensaje obtenido
                 }
             }
             return responseCode;
         } catch (IOException e) {
-            System.out.println("Error occurred while sending SOAP request: " + e.getMessage());
             throw e;
         }
     }
@@ -107,7 +105,6 @@ public class ConsumerServices {
         } else {
             throw new BadEmailException(BadEmailException.BAD_EMAIL);
         }
-        //System.out.println(xmlSoapAdd);
         URL url = new URL("http://mns-crm/CRMWebService/CrmService.svc/basic");
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -155,8 +152,6 @@ public class ConsumerServices {
             return responseCode; // Retornar el código de respuesta
 
         } catch (IOException e) {
-            // Si ocurre un error durante la comunicación con el servidor, capturarlo y mostrar el mensaje
-            System.out.println("Error occurred while sending SOAP request: " + e.getMessage());
             throw e; // Re-lanzar la excepción
         }
     }

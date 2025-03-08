@@ -1,8 +1,8 @@
 package co.miniso.rompefilas.service;
 
-import co.miniso.rompefilas.db3.CRM.ConsumerServices;
-import co.miniso.rompefilas.db3.CRM.Exceptions.BadEmailException;
-import co.miniso.rompefilas.db3.CRM.Exceptions.ExistEmailException;
+import co.miniso.rompefilas.db3.crm.ConsumerServices;
+import co.miniso.rompefilas.db3.crm.Exceptions.BadEmailException;
+import co.miniso.rompefilas.db3.crm.Exceptions.ExistEmailException;
 import co.miniso.rompefilas.db3.model.Client;
 import co.miniso.rompefilas.db3.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;

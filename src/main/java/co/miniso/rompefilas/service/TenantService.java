@@ -2,9 +2,11 @@ package co.miniso.rompefilas.service;
 
 import co.miniso.rompefilas.db1.model.Tenant;
 import co.miniso.rompefilas.db1.repository.TenantRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -12,6 +14,13 @@ import java.util.stream.Collectors;
 public class TenantService {
 
     private final TenantRepository tenantRepository;
+
+    // Inyectar valores desde application.properties
+    @Value("${spring.datasource.db2.username}")
+    private String dbUsername;
+
+    @Value("${spring.datasource.db2.password}")
+    private String dbPassword;
 
     @Autowired
     public TenantService(TenantRepository tenantRepository) {
@@ -26,8 +35,8 @@ public class TenantService {
         if (t == null) return null;
 
         return String.format(
-                "jdbc:sqlserver://%s:1433;databaseName=master;user=sa;password=Password1!;encrypt=false;trustServerCertificate=true",
-                t.getIpAddress()
+                "jdbc:sqlserver://%s:1433;databaseName=master;user=%s;password=%s;encrypt=false;trustServerCertificate=true",
+                t.getIpAddress(), dbUsername, dbPassword
         );
     }
 
@@ -37,7 +46,13 @@ public class TenantService {
     public Map<String, String> getAllTenants() {
         return tenantRepository.findAll().stream()
                 .collect(Collectors.toMap(Tenant::getName, t ->
-                        "jdbc:sqlserver://" + t.getIpAddress() +
-                                ":1433;databaseName=master;user=sa;password=Password1!;encrypt=false;trustServerCertificate=true"));
+                        String.format(
+                                "jdbc:sqlserver://%s:1433;databaseName=master;user=%s;password=%s;encrypt=false;trustServerCertificate=true",
+                                t.getIpAddress(), dbUsername, dbPassword
+                        )));
+    }
+
+    public List<String> getNameStores() {
+        return tenantRepository.getNameStores();
     }
 }
