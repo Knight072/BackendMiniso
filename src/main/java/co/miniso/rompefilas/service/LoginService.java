@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class LoginService {
 
-	private LoginRepository loginRepository;
+	private final LoginRepository loginRepository;
 
 	@Autowired
 	public LoginService(LoginRepository loginRepository) {
@@ -22,20 +22,20 @@ public class LoginService {
 		this.loginRepository = loginRepository;
 	}
 
-	public Login registerNewUser(Login user) throws NoSuchAlgorithmException {
+	public void registerNewUser(Login user) throws NoSuchAlgorithmException {
 		if (loginRepository.findByDocument(user.getDocument()).isPresent()) {
 			throw new RuntimeException("Username already exists");
 		}
 		user.setPassword(hashPassword(user.getPassword()));
-		return loginRepository.save(user);
+		loginRepository.save(user);
 	}
 
-	public Login validarUsuario(Login LogInUser) {
-		Optional<Login> user = loginRepository.findByDocument(LogInUser.getDocument());
+	public Login validarUsuario(Login logInUser) {
+		Optional<Login> user = loginRepository.findByDocument(logInUser.getDocument());
 
 		if (user.isPresent()) {
 			try {
-				if (hashPassword(LogInUser.getPassword()).equals(user.get().getPassword())) {
+				if (hashPassword(logInUser.getPassword()).equals(user.get().getPassword())) {
 					return user.get();
 				}
 			} catch (NoSuchAlgorithmException e) {

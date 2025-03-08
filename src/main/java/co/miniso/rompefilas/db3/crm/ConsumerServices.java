@@ -10,8 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.*;
 
-import co.miniso.rompefilas.db3.crm.Exceptions.BadEmailException;
-import co.miniso.rompefilas.db3.crm.Exceptions.ExistEmailException;
+import co.miniso.rompefilas.db3.crm.exceptions.BadEmailException;
+import co.miniso.rompefilas.db3.crm.exceptions.ExistEmailException;
 import co.miniso.rompefilas.db3.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

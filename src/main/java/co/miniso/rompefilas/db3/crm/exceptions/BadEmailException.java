@@ -1,4 +1,4 @@
-package co.miniso.rompefilas.db3.crm.Exceptions;
+package co.miniso.rompefilas.db3.crm.exceptions;
 
 public class BadEmailException extends Exception{
 	private static final long serialVersionUID = 1L;
