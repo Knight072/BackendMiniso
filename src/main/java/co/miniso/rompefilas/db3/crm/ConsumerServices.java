@@ -166,8 +166,9 @@ public class ConsumerServices {
         if (email == null || email.isEmpty() || email.length() > 254) {
             return false;
         }
-        String regex = "^[a-zA-Z0-9_+&*-]+(\\.[a-zA-Z0-9_+&*-]+)*@"
-                + "[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{2,})$";
+
+        String regex = "^[a-zA-Z0-9_+&*-]+(\\.[a-zA-Z0-9_+&*-]+){0,10}@"
+                + "[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+){0,5}(\\.[a-zA-Z]{2,})$";
 
         return java.util.regex.Pattern.matches(regex, email);
     }
