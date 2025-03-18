@@ -7,73 +7,81 @@ import jakarta.persistence.*;
 public class Article {
 
     @Id
-    @Column(name = "CodigoBarra", nullable = false, length = 50) // Ajusta el length si es necesario
-    private String codigoBarra;
+    @Column(name = "CodigoBarras", nullable = false) // Ajusta el length si es necesario
+    private String barCode;
 
     @Column(name = "Sku")
-    private Integer sku;
+    private String sku;
 
-    @Column(name = "NombreDept", length = 100)
-    private String nombreDept;
+    @Column(name = "NombreDept")
+    private String deptName;
 
-    @Column(name = "Producto", length = 200)
-    private String producto;
+    @Column(name = "Articulo")
+    private String article;
 
-    @Column(name = "PERM_UNIT_PRICE")
-    private Double permUnitPrice;
+    @Column(name = "ValorImpuesto")
+    private Double taxValue;
 
-    @Column(name = "CUR_UNIT_PRICE")
-    private Double curUnitPrice;
+    @Column(name = "PrecioSinImpuesto")
+    private Double priceWithoutTax;
 
-    // Getters y Setters
-    public String getCodigoBarra() {
-        return codigoBarra;
+    @Column(name = "Impuesto")
+    private String tax;
+
+    // Getters y Setters corregidos
+    public String getBarCode() {
+        return barCode;
     }
 
-    public void setCodigoBarra(String codigoBarra) {
-        this.codigoBarra = codigoBarra;
+    public void setBarCode(String barCode) {
+        this.barCode = barCode;
     }
 
-    public Integer getSku() {
+    public String getSku() {
         return sku;
     }
 
-    public void setSku(Integer sku) {
+    public void setSku(String sku) {
         this.sku = sku;
     }
 
-    public String getNombreDept() {
-        return nombreDept;
+    public String getDeptName() {
+        return deptName;
     }
 
-    public void setNombreDept(String nombreDept) {
-        this.nombreDept = nombreDept;
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 
-    public String getProducto() {
-        return producto;
+    public String getArticle() {
+        return article;
     }
 
-    public void setProducto(String producto) {
-        this.producto = producto;
+    public void setArticle(String article) {
+        this.article = article;
     }
 
-    public Double getPermUnitPrice() {
-        return permUnitPrice;
+    public Double getTaxValue() {
+        return taxValue;
     }
 
-    public void setPermUnitPrice(Double permUnitPrice) {
-        this.permUnitPrice = permUnitPrice;
+    public void setTaxValue(Double taxValue) {
+        this.taxValue = taxValue;
     }
 
-    public Double getCurUnitPrice() {
-        return curUnitPrice;
+    public Double getPriceWithoutTax() {
+        return priceWithoutTax;
     }
 
-    public void setCurUnitPrice(Double curUnitPrice) {
-        this.curUnitPrice = curUnitPrice;
+    public void setPriceWithoutTax(Double priceWithoutTax) {
+        this.priceWithoutTax = priceWithoutTax;
+    }
+
+    public String getTax() {
+        return tax;
+    }
+
+    public void setTax(String tax) {
+        this.tax = tax;
     }
 }
-
-
-

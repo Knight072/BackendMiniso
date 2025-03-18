@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, String> {
-    @Query("SELECT t.name FROM Tenant t")
-    List<String> getNameStores();
+    @Query("SELECT t.store, t.name FROM Tenant t")
+    List<Object[]> getNameStores();
 }
 

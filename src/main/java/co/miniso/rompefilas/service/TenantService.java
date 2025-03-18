@@ -52,7 +52,7 @@ public class TenantService {
                         )));
     }
 
-    public List<String> getNameStores() {
+    public List<Object[]> getNameStores() {
         return tenantRepository.getNameStores();
     }
 }

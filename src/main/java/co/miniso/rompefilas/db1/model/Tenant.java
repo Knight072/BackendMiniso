@@ -10,6 +10,10 @@ import jakarta.persistence.Table;
 public class Tenant {
 
     @Id
+    @Column(name = "store")
+    private int store;
+
+    @Column(name = "name")
     private String name;
 
     @Column(name = "ip_address")

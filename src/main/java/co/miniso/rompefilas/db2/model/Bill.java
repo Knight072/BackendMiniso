@@ -36,4 +36,8 @@ public class Bill {
 
 	@OneToMany(mappedBy = "bill", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<InvoiceDetail> invoiceDetails;
+
+	public String getNumAtCard() {
+		return numAtCard;
+	}
 }

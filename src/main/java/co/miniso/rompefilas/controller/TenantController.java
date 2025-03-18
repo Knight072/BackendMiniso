@@ -21,7 +21,7 @@ public class TenantController {
     }
 
     @GetMapping("/stores")
-    public List<String> getStores(){
+    public List<Object[]> getStores(){
         return tenantService.getNameStores();
     }
 }

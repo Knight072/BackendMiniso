@@ -1,5 +1,9 @@
 package co.miniso.rompefilas.controller;
 
+import co.miniso.rompefilas.configuration.DynamicDataSource;
+import co.miniso.rompefilas.db2.model.Article;
+import co.miniso.rompefilas.db2.model.Bill;
+import co.miniso.rompefilas.service.TenantService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -19,15 +23,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/bill")
 public class ConsultingController {
 
-	private BillService billService;
+	private final BillService billService;
+	private final TenantService tenantService;
 
 	@Autowired
-	public ConsultingController(BillService billService) {
+	public ConsultingController(BillService billService, TenantService tenantService) {
 		this.billService = billService;
+		this.tenantService = tenantService;
 	}
 
 	@GetMapping("{numBill}")
-	public ResponseEntity<List<Object[]>> getBillById(@PathVariable("numBill") String numBill, HttpServletRequest request) {
+	public ResponseEntity<List<Object[]>> getBillById(@PathVariable("numBill") String numBill,
+													  @RequestHeader("X-Tienda") String tienda,
+													  HttpServletRequest request) {
 		// Obtener las cookies de la petición
 		Cookie[] cookies = request.getCookies();
 
@@ -37,8 +45,18 @@ public class ConsultingController {
 					.anyMatch(cookie -> "authToken".equals(cookie.getName()));
 
 			if (hasAuthToken) {
-				List<Object[]> result = billService.buscarPorId(numBill);
-				return ResponseEntity.ok(result);
+				if (!tenantService.getAllTenants().containsKey(tienda)) {
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+							.body(null);
+				}
+				// 🔹 Cambiar la base de datos activa
+				DynamicDataSource.setCurrentTenant(tienda);
+				try {
+					List<Object[]> factura = billService.buscarPorId(numBill);
+					return ResponseEntity.ok(factura);
+				} finally {
+					DynamicDataSource.clear(); // 🔹 Limpia la tienda después de la petición
+				}
 			}
 		}
 		// Si no hay cookie o no es válida, devolver 401 Unauthorized

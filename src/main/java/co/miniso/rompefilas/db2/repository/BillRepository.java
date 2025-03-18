@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BillRepository extends JpaRepository<Bill, String> {
 
     @Query(value = """
         USE EMISION_FE;
-        SELECT 
+        SELECT\s
             oi.NumAtCard AS NumAtCard,
             oi.HoraEmisionPos AS HoraEmisionPos,
             oi.DocTotal AS DocTotal,
@@ -27,7 +28,8 @@ public interface BillRepository extends JpaRepository<Bill, String> {
         FROM OINV_FE oi
         INNER JOIN INV_FE i ON oi.Store = i.Store AND oi.DocNum = i.DocNum
         WHERE oi.NumAtCard = :numAtCard
-        """,
+       \s""",
             nativeQuery = true)
     List<Object[]> findByNumAtCard(@Param("numAtCard") String numAtCard);
+
 }
