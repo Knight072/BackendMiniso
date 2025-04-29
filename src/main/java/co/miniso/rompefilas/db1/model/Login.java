@@ -3,26 +3,30 @@ package co.miniso.rompefilas.db1.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "login") // Nombre de la tabla en SQL Server
+@Table(name = "LOGIN")
 public class Login {
 
 	@Id
 	@Column(name = "document", nullable = false)
 	private String document;
 
-	@Column(nullable = false)
+	@Column(name = "username", nullable = false)
 	private String username;
 
-	@Column(nullable = false)
+	@Column(name = "password", nullable = false)
 	private String password;
-	
+
+	@Column(name = "idTienda", nullable = false)
+	private int store;
+
 	public Login() {
 	}
 
-	public Login(String document, String username, String password) {
+	public Login(String document, String username, String password, int store) {
 		this.document = document;
 		this.username = username;
 		this.password = password;
+		this.store = store;
 	}
 
 	public String getDocument() {
@@ -37,6 +41,10 @@ public class Login {
 		return password;
 	}
 
+	public int getStore() {
+		return store;
+	}
+
 	public void setDocument(String document) {
 		this.document = document;
 	}
@@ -47,5 +55,9 @@ public class Login {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setStore(int store) {
+		this.store = store;
 	}
 }

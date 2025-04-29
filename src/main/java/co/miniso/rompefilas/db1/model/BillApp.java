@@ -1,6 +1,7 @@
 package co.miniso.rompefilas.db1.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -9,15 +10,16 @@ import java.util.List;
 @Table(name = "OINV_FE_APP")
 public class BillApp {
 
+	@Id
+	@Column(name = "NumAtCard", nullable = false)
+	private String numAtCard;
+
 	@Column(name = "Store", nullable = false)
 	private Integer store;
 
 	@Column(name = "DocDate", nullable = false)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date docDate;
-
-	@Id
-	@Column(name = "NumAtCard", nullable = false)
-	private String numAtCard;
 
 	@Column(name = "ConsecutivoFE")
 	private Integer consecutivoApp;
@@ -27,7 +29,7 @@ public class BillApp {
 	private Date horaEmisionApp;
 
 	@Column(name = "VendedorAPP")
-	private Date vendedorApp;
+	private String vendedorApp;
 
 	@Column(name = "DocTotal", nullable = false)
 	private Double docTotal;
@@ -41,8 +43,8 @@ public class BillApp {
 	@Column(name = "Nombre_Cliente", nullable = false)
 	private String nombreCliente;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "NumAtCard", referencedColumnName = "NumAtCard")
+	@OneToMany(mappedBy = "billApp", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<InvoiceDetailApp> productos;
 
 	public Integer getStore() {
@@ -85,11 +87,11 @@ public class BillApp {
 		this.horaEmisionApp = horaEmisionApp;
 	}
 
-	public Date getVendedorApp() {
+	public String getVendedorApp() {
 		return vendedorApp;
 	}
 
-	public void setVendedorApp(Date vendedorApp) {
+	public void setVendedorApp(String vendedorApp) {
 		this.vendedorApp = vendedorApp;
 	}
 

@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "session")
+@Table(name = "SESSION")
 public class Session {
 	@Id
 	@Column(name = "token", nullable = false, unique = true)

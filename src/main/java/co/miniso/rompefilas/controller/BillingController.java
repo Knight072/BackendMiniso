@@ -1,6 +1,7 @@
 package co.miniso.rompefilas.controller;
 
 import co.miniso.rompefilas.db1.model.BillApp;
+import co.miniso.rompefilas.service.BillRequest;
 import co.miniso.rompefilas.service.BillingService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,17 +25,14 @@ public class BillingController {
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> billingRequest(@RequestBody BillApp bill, HttpServletRequest request) {
-
+    public ResponseEntity<Integer> billingRequest(@RequestBody BillRequest bill, HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-
         if (cookies != null) {
             boolean hasAuthToken = Arrays.stream(cookies).anyMatch(
                     cookie -> "authToken".equals(cookie.getName()));
 
             if (hasAuthToken) {
-                billingService.saveBill(bill);
-                return ResponseEntity.ok(true);
+                return ResponseEntity.ok(billingService.saveBill(bill));
             }
         }
         // Si no hay cookie o no es válida, devolver 401 Unauthorized

@@ -32,13 +32,14 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<Boolean> loginSubmit(@RequestBody Login userLogin, HttpServletResponse response) {
+	public ResponseEntity<Object[]> loginSubmit(@RequestBody Login userLogin, HttpServletResponse response) {
 		Login user = loginService.validarUsuario(userLogin);
 		if (user == null) {
-			return new ResponseEntity<>(false, HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 		}
 		Session session = new Session(UUID.randomUUID(), Instant.now(), user);
 		sessionRepository.save(session);
+		Object[] data = loginService.validateBillData(user);
 		// Configurar la cookie HTTP-Only
 		Cookie authCookie = new Cookie("authToken", session.getToken().toString());
 		authCookie.setHttpOnly(true); // 🔒 No accesible desde JavaScript
@@ -46,7 +47,7 @@ public class LoginController {
 		authCookie.setPath("/"); // Disponible en toda la app
 		authCookie.setMaxAge(60 * 60 * 2); // 2 horas de duración
 		response.addCookie(authCookie);
-		return new ResponseEntity<>(true, HttpStatus.OK);
+		return new ResponseEntity<>(data, HttpStatus.OK);
 	}
 
 	@PostMapping("/logout")

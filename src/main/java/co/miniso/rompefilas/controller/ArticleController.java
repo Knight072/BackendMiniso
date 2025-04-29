@@ -44,7 +44,6 @@ public class ArticleController {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                             .body(null);
                 }
-
                 // 🔹 Cambiar la base de datos activa
                 DynamicDataSource.setCurrentTenant(tienda);
 

@@ -45,11 +45,13 @@ public class TenantService {
      */
     public Map<String, String> getAllTenants() {
         return tenantRepository.findAll().stream()
-                .collect(Collectors.toMap(Tenant::getName, t ->
-                        String.format(
+                .collect(Collectors.toMap(
+                        t -> t.getName().trim(), // Eliminar espacios en blanco en las claves
+                        t -> String.format(
                                 "jdbc:sqlserver://%s:1433;databaseName=master;user=%s;password=%s;encrypt=false;trustServerCertificate=true",
                                 t.getIpAddress(), dbUsername, dbPassword
-                        )));
+                        )
+                ));
     }
 
     public List<Object[]> getNameStores() {
