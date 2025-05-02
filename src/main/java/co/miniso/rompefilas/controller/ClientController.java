@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 
-@CrossOrigin(origins = {"localhost:8080, localhost:3000, 192.168.84.17:8080"}, allowCredentials = "true")
+//@CrossOrigin(origins = {"localhost:8080, localhost:3000, 192.168.84.17:8080"}, allowCredentials = "true")
 @RestController
 @RequestMapping("/client")
 public class ClientController {
