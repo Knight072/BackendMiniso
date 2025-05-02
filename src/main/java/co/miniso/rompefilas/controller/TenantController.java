@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"*"}, allowCredentials = "true")
+@CrossOrigin(origins = {"localhost:8080, localhost:3000"}, allowCredentials = "true")
 @RestController
 @RequestMapping("/tenant")
 public class TenantController {
