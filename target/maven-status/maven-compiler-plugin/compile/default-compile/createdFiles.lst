@@ -6,6 +6,7 @@ co\miniso\rompefilas\service\ArticleService.class
 co\miniso\rompefilas\db2\repository\BillRepository.class
 co\miniso\rompefilas\service\ClientService.class
 co\miniso\rompefilas\db3\crm\exceptions\BadEmailException.class
+co\miniso\rompefilas\configuration\cors\CorsConfig.class
 co\miniso\rompefilas\db3\model\Client.class
 co\miniso\rompefilas\db2\repository\ArticleRepository.class
 co\miniso\rompefilas\RompeFilasApplication.class
