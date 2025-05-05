@@ -43,7 +43,7 @@ public class LoginController {
 		// Configurar la cookie HTTP-Only
 		Cookie authCookie = new Cookie("authToken", session.getToken().toString());
 		authCookie.setHttpOnly(true); // 🔒 No accesible desde JavaScript
-		authCookie.setSecure(true); // Solo HTTPS (en producción)
+		authCookie.setSecure(false); // Solo HTTPS (en producción). Cuando este el https activo dejar en true
 		authCookie.setPath("/"); // Disponible en toda la app
 		authCookie.setMaxAge(60 * 60 * 2); // 2 horas de duración
 		response.addCookie(authCookie);
