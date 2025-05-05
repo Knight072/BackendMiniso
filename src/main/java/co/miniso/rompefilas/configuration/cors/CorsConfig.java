@@ -3,27 +3,29 @@ package co.miniso.rompefilas.configuration.cors;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-import java.util.List;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class CorsConfig {
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("*")); // Reemplaza o añade más dominios
-        config.setAllowCredentials(true);
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("Authorization"));
-
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+
+        // Allow all origins temporarily for testing
+        config.addAllowedOriginPattern("*");
+        // For production, specify exact origins:
+        // config.addAllowedOrigin("http://192.168.84.17:8080");
+        // config.addAllowedOrigin("http://otheralloweddomain.com");
+
+        config.setAllowCredentials(true);
+        config.addAllowedMethod("*");
+        config.addAllowedHeader("*");
+        config.setMaxAge(3600L);
+
         source.registerCorsConfiguration("/**", config);
-        return source;
+        return new CorsFilter(source);
     }
 }
-
