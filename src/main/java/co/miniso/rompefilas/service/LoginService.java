@@ -33,7 +33,7 @@ public class LoginService {
 		loginRepository.save(user);
 	}
 
-	public Login validarUsuario(Login logInUser) {
+	public Login validateUser(Login logInUser) {
 		Optional<Login> user = loginRepository.findByDocument(logInUser.getDocument());
 		if (user.isPresent()) {
 			try {

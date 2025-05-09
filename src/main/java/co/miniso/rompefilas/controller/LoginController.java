@@ -33,7 +33,7 @@ public class LoginController {
 
 	@PostMapping("/login")
 	public ResponseEntity<Object[]> loginSubmit(@RequestBody Login userLogin, HttpServletResponse response) {
-		Login user = loginService.validarUsuario(userLogin);
+		Login user = loginService.validateUser(userLogin);
 		if (user == null) {
 			return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 		}
